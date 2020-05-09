@@ -1,0 +1,4 @@
+[ 2020-02-28T17:07:54+08:00 ] ::1 ::1 GET /
+[ error ] [8]Undefined property: app\index\controller\Index::$city[D:\phpstudy_pro\WWW\imooc_o2o.20170718\application\index\controller\Index.php:13]
+
+---------------------------------------------------------------

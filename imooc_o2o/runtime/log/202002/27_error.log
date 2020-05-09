@@ -1,0 +1,77 @@
+[ 2020-02-27T21:19:38+08:00 ] ::1 ::1 GET /
+[ error ] [2002]SQLSTATE[HY000] [2002] ÓÉÓÚÄ¿±ê¼ÆËã»ú»ı¼«¾Ü¾ø£¬ÎŞ·¨Á¬½Ó¡£
+[D:\phpstudy_pro\WWW\imooc_o2o.20170718\thinkphp\library\think\db\Connection.php:282]
+
+---------------------------------------------------------------
+[ 2020-02-27T21:19:43+08:00 ] ::1 ::1 GET /
+[ error ] [2002]SQLSTATE[HY000] [2002] ÓÉÓÚÄ¿±ê¼ÆËã»ú»ı¼«¾Ü¾ø£¬ÎŞ·¨Á¬½Ó¡£
+[D:\phpstudy_pro\WWW\imooc_o2o.20170718\thinkphp\library\think\db\Connection.php:282]
+
+---------------------------------------------------------------
+[ 2020-02-27T21:37:07+08:00 ] ::1 ::1 GET /
+[ error ] [2002]SQLSTATE[HY000] [2002] ÓÉÓÚÄ¿±ê¼ÆËã»ú»ı¼«¾Ü¾ø£¬ÎŞ·¨Á¬½Ó¡£
+[D:\phpstudy_pro\WWW\imooc_o2o.20170718\thinkphp\library\think\db\Connection.php:282]
+
+---------------------------------------------------------------
+[ 2020-02-27T21:42:07+08:00 ] ::1 ::1 GET /
+[ error ] [2002]SQLSTATE[HY000] [2002] ÓÉÓÚÄ¿±ê¼ÆËã»ú»ı¼«¾Ü¾ø£¬ÎŞ·¨Á¬½Ó¡£
+[D:\phpstudy_pro\WWW\imooc_o2o.20170718\thinkphp\library\think\db\Connection.php:282]
+
+---------------------------------------------------------------
+[ 2020-02-27T21:42:13+08:00 ] ::1 ::1 GET /
+[ error ] [2002]SQLSTATE[HY000] [2002] ÓÉÓÚÄ¿±ê¼ÆËã»ú»ı¼«¾Ü¾ø£¬ÎŞ·¨Á¬½Ó¡£
+[D:\phpstudy_pro\WWW\imooc_o2o.20170718\thinkphp\library\think\db\Connection.php:282]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:03:43+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]æœªå®šä¹‰å˜é‡: title[D:\phpstudy_pro\WWW\imooc_o2o.20170718\runtime\temp\09f14cea8bbd1c0496e44d3c61eb20d3.php:9]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:06:46+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]æœªå®šä¹‰å˜é‡: title[D:\phpstudy_pro\WWW\imooc_o2o.20170718\runtime\temp\09f14cea8bbd1c0496e44d3c61eb20d3.php:9]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:08:02+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]æœªå®šä¹‰å˜é‡: title[D:\phpstudy_pro\WWW\imooc_o2o.20170718\runtime\temp\09f14cea8bbd1c0496e44d3c61eb20d3.php:9]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:08:36+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]æœªå®šä¹‰å˜é‡: title[D:\phpstudy_pro\WWW\imooc_o2o.20170718\runtime\temp\09f14cea8bbd1c0496e44d3c61eb20d3.php:9]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:08:39+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]æœªå®šä¹‰å˜é‡: title[D:\phpstudy_pro\WWW\imooc_o2o.20170718\runtime\temp\09f14cea8bbd1c0496e44d3c61eb20d3.php:9]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:09:00+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]æœªå®šä¹‰å˜é‡: controler[D:\phpstudy_pro\WWW\imooc_o2o.20170718\runtime\temp\09f14cea8bbd1c0496e44d3c61eb20d3.php:12]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:09:41+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]æœªå®šä¹‰å˜é‡: city[D:\phpstudy_pro\WWW\imooc_o2o.20170718\runtime\temp\09f14cea8bbd1c0496e44d3c61eb20d3.php:20]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:10:30+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]æœªå®šä¹‰å˜é‡: title[D:\phpstudy_pro\WWW\imooc_o2o.20170718\runtime\temp\09f14cea8bbd1c0496e44d3c61eb20d3.php:9]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:12:42+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]Undefined property: app\index\controller\Index::$city[D:\phpstudy_pro\WWW\imooc_o2o.20170718\application\index\controller\Index.php:13]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:12:43+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]Undefined property: app\index\controller\Index::$city[D:\phpstudy_pro\WWW\imooc_o2o.20170718\application\index\controller\Index.php:13]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:12:43+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]Undefined property: app\index\controller\Index::$city[D:\phpstudy_pro\WWW\imooc_o2o.20170718\application\index\controller\Index.php:13]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:12:44+08:00 ] ::1 ::1 GET /index.php/index/index/index
+[ error ] [8]Undefined property: app\index\controller\Index::$city[D:\phpstudy_pro\WWW\imooc_o2o.20170718\application\index\controller\Index.php:13]
+
+---------------------------------------------------------------
+[ 2020-02-27T22:21:40+08:00 ] ::1 ::1 GET /index.php/index
+[ error ] [8]Undefined property: app\index\controller\Index::$city[D:\phpstudy_pro\WWW\imooc_o2o.20170718\application\index\controller\Index.php:13]
+
+---------------------------------------------------------------
