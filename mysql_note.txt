@@ -1,0 +1,72 @@
+{
+group by:要求select后面加分组函数和group by后面出现的字段,有where条件的要在from表的后面,order by 子句
+如：select 列（要求出现在group by的后面）,分组函数
+	from 表
+	【where 筛选条件】
+	group by 要分组的列，要求在select的后面也要出现
+	【having 筛选条件】
+	【order by 子句】
+
+注意点：                  数据源            位置                    关键字
+		分组前筛选  	  原始表            group by子句的前面       where
+		分组后筛选        分组后的结果集    group by子句的前面       having
+		
+重点：  1.分组函数做条件肯定是放在having子句中；
+		2.能在分组前筛选的，就优先考虑使用分组前筛选（性能）（在分组前后都有的字段下）；
+		3.group by子句支持单个字段分组，多个字段分组（多个字段之间用逗号隔开且没有顺序要求），表达式或函数（用得较少）；
+		4.也可以添加排序（排序放在整个分组查询的最后）
+	
+//简单查询条件,分组前的查询条件（在同一个表里），where后面的条件字段在from后面的表里
+--查询每个班级最高的分数
+select class_id ,max(score) from class group by class_id;
+
+--查询邮箱中包含a字符的，每个部门的平均工资
+select department_id, avg(salary) from employees where emall like '%a%' group by department_id;
+
+--查询有奖金的每个领导手下员工的最高工资
+select manager_id,max(salary) from employees where 奖金字段 is not null group by manager_id;
+
+//复杂查询条件，分组后的查询条件（可能不在一个表里）
+--查询哪个部门的员工个数>2
+1.查询每个部门的员工个数
+select department_id,count(*) from employees group by department_id;
+2.根据1.的结果进行筛选，查询哪个部门的员工个数>2，所以结果为
+select department_id,count(*) from employees group by department_id having count(*)>2;
+
+--查询每个工种有奖金的员工的最高工资>12000的工种编号和最高工资
+1.查询每个工种有奖金的员工的最高工资
+select job_id,max(salary) from employees where 奖金字段 is not null group by job_id;
+2.根据1.的结果进行筛选，最高工资>12000,所以结果为
+select job_id,max(salary) from employees where 奖金字段 is not null group by job_id having
+max(salary)>12000;
+
+--查询领导编号>102的每个领导手下的最低工资>5000的领导编号是哪个，以及其最低工资
+1.查询每个领导手下员工的最低工资
+select manager_id,min(salary) from employees group by manager_id;
+2.添加筛选条件，领导编号>102
+select manager_id,min(salary) from employees where manager_id>102 group by manager_id;
+3.继续添加筛选条件，最低工资>5000,所以结果为
+select manager_id,min(salary) from employees where manager_id>102 group by manager_id having
+min(salary)>5000;
+
+//按表达式或函数分组
+--按员工姓名的长度分组，查询每一组的员工个数，筛选员工个数>5的有哪些
+1.查询每个长度的员工个数
+select count(*),length(last_name) len_name from employees group by length(last_name);
+2.添加筛选条件
+select count(*) c,length(last_name) len_name from employees group by len_name having c>5;
+
+//按多个字段分组
+--查询每个部门每个工种的员工的平均工资
+select department_id,job_id,avg(salary) from employees group by department_id,job_id;
+
+//添加排序
+--查询每个部门每个工种的员工的平均工资，并且按平均工资的高低显示
+select department_id,job_id,avg(salary) from employees group by department_id,job_id order by avg(salary) desc;
+
+--查询每个部门每个工种的员工的平均工资>10000，并且按平均工资的高低显示
+select department_id,job_id,avg(salary) a from employees group by department_id,job_id having a>10000 order by a desc;
+
+--查询员工最高工资和最低工资的差距
+select max(salary)-min(salary) difference from employees;
+}
