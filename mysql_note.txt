@@ -70,4 +70,7 @@ select department_id,job_id,avg(salary) a from employees group by department_id,
 --查询员工最高工资和最低工资的差距
 select max(salary)-min(salary) difference from employees;
 }
+
+
+
   
