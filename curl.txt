@@ -1,0 +1,66 @@
+	/**  
+    * POST请求
+    */
+	function post($url, $content=[])
+	{
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+		//接口如果要求json格式 则要json_encode
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($content,JSON_UNESCAPED_UNICODE));
+		//执行命令 
+		$output = curl_exec($ch);
+		curl_close($ch);
+		return $output;
+	}
+	
+	
+	/**  
+	* 通用
+    * url 路径
+    * data 数据
+    * method 请求方法 POST（默认） GET
+    * is_json post方法时是否以json格式传输
+    */
+    public function curlRequest( string $url = '', $data = null, string $method = 'POST', $is_json = true )
+    {
+        $get_str = '';
+        if($method == 'GET') {
+            $temp = [];
+            if(!empty($data)) {
+                foreach ($data as $k => $v) {
+                    $temp[] = $k.'='.$v;
+                }
+            }
+                
+            $get_str = implode('&', $temp);
+            $url = $url.'?'.$get_str;
+        } else {
+            //POST
+            //json格式
+            $data = $is_json ? json_encode($data,JSON_UNESCAPED_UNICODE) : $data;
+        }
+        //初始化  
+        $ch = curl_init($url);  
+        //设置请求的参数  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);  
+
+        if($method=='POST') {
+            curl_setopt($ch, CURLOPT_POST, 1);  //设置请求方式为post  
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        }
+
+        //执行发送  
+        $res = curl_exec($ch);  
+        //返回  
+        return json_decode($res,true); 
+    }
+	
+	
+	
