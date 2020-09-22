@@ -180,6 +180,46 @@ return: 1.终止当前脚本执行，如果有包含文件，包含文件的retu
 		  log_errors = on;          //将错误记录在日志中
 		  error_log = '地址';       //错误日志保存的地址
 		  ini_set('error_reporting',E_ALL);//可通过ini_set修改php.ini配置文件，不需要重启
+		  
+文件夹操作：1.创建 	mkdir  如：mkdir('文件名',[权限如0777],[true|false(是否递归创建，默认false)]);  //默认不能递归创建
+			2.删除  rmdir  如：rmdir('文件名') //不能递归删除，即只能删除空的文件夹
+			3.重命名文件夹  rename 如：rename('旧名字','新名字');
+			4.是否文件夹 is_dir  如：is_dir('文件夹名');
+			5.打开文件夹 opendir 如：opendir('文件夹名'); //返回的是一个资源标识
+			6.读取文件夹 readdir 如：readdir(文件夹标识); //需要传入打开文件夹时返回的标识
+			7.关闭文件夹 closedir 如：closedir(文件夹标识);
+			如：列出一个文件夹下的文件
+				$folder = opendir('./');
+				while($f = readdir($folder)){
+					if($f == '.' || $f == '..') //文件夹下的第一个文件名和第二个文件名分别.和..，他们是隐藏的
+						continue;
+					echo iconv('gbk','utf-8',$f),'<br/>'; //gbk转成utf-8。中文系统下的文件名字需要转码，因为浏览器是utf-8编码。
+				}
+				closedir($folder);
+				
+			如：循环遍历一个文件夹下的所有文件
+				function dirList($dir_path = '') {
+					 if(is_dir($dir_path)) {
+						 $dirs = opendir($dir_path);
+						 if($dirs) {
+							while(($file = readdir($dirs)) !== false) {
+								 if($file !== '.' && $file !== '..') {
+									 if(is_dir($file)) {
+										 echo $dir_path . '/' . $file . '<br>';
+										 dirList($dir_path . '/' . $file);
+									 } else {
+										 echo $dir_path . '/' . $file . '<br>';
+									 }
+								 }
+							 }
+							 closedir($dirs);
+						 }
+					 }else {
+						 echo '该目录不存在！';
+					  }
+				}
+					
+				
 	  
 	  
 	  
