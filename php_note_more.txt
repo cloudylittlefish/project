@@ -196,6 +196,8 @@ return: 1.终止当前脚本执行，如果有包含文件，包含文件的retu
 					echo iconv('gbk','utf-8',$f),'<br/>'; //gbk转成utf-8。中文系统下的文件名字需要转码，因为浏览器是utf-8编码。
 				}
 				closedir($folder);
+				注：我们操作系统是中文的 即是gbk gb2312 ，所以php程序在中文系统中拿到的资源是gbk编码的，
+					然而浏览器多数是utf-8的，所以中文系统php程序拿到的gbk编码的东西在浏览器上是乱码
 				
 			如：循环遍历一个文件夹下的所有文件
 				function dirList($dir_path = '') {
@@ -218,9 +220,50 @@ return: 1.终止当前脚本执行，如果有包含文件，包含文件的retu
 						 echo '该目录不存在！';
 					  }
 				}
-					
 				
-	  
+文件操作：1.将字符写入文件： file_put_contents	file_put_contents('文件名地址','字符串');
+			小结：1.所有“写”操作都是清空重写。
+				  2.在文本中换行是\r\n。\r:回车（光标移动到当前行的最前面）。\n：换行。文本中要\r\n才能换行
+				  3.\r\n是特殊字符，必须放在双引号内。
+				
+		  2.读取文件到一个字符串：1.file_get_contents - 将整个文件读入一个字符串
+					  2.readfile - 读取输出文件内容
+					   注：echo file_get_contents('文件名地址') == readfile('文件名地址');
+					   
+		  3.打开文件并操作：fopen fopen('文件名地址','模式'); 如：$fp = fopen('./test.txt','w'); //打开文件返回文件指针（文件地址）。循环写时会返回当前地址
+							r：读 read
+							w：写（清空写,不存在则新建文件） write 
+							a：追加 append
+		  4.写入文件一行：fputs fputs(文件指针,字符串); 如：fputs($fp,'abc'); //循环写时会返回当前地址
+		  
+		  5.读取文件一行：fgets fgets(文件指针); 如：fgets($fp); //循环读时会返回当前地址
+		  
+		  6.关闭文件：fclose
+		  
+		  7.删除文件：unlink('地址'); //文件不存在则报错
+		  小结：1.打开文件，返回文件指针（文件指针就是文件地址），资源类型。
+				2.打开文件写、追加操作，如果文件不存在就会创建新的文件。
+				
+		  8.二进制读取：fread(文件指针,文件大小);
+		  如：$path = './face.jpg'; //图片
+			  $fp = fopen($path,'r');
+			  header('content-type:image/jpeg'); //告知浏览器下面的代码通过jpg图片的方式解析（默认是以字符串形式解析，ie除外）
+			  echo fread($fp,filesize($path));
+		  
+			普通读取：
+				header('content-type:image/jpeg');
+				echo file_get_contents('./face.jpg');  //file_get_contents也可以进行二进制读取
+			
+		  小结：1.文件的存储有两种：字符流和二进制流。二进制流的读取按文件大小来读的。
+				2.文本流有明确的结束符。二进制流没有明确的结束符，通过文件大小来判断是否读取完毕。
+				3.file_get_contents既可以进行文本流读取，也可以进行二进制读取。
+				
+
+文件/文件夹判断：1.是否是文件：is_file('地址');
+				 2.是否是文件夹：is_dir('地址');
+				 3.文件或文件夹是否存在：file_exists('地址');
+				
+
 	  
 	  
 	  
