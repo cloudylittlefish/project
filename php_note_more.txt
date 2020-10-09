@@ -263,6 +263,23 @@ return: 1.终止当前脚本执行，如果有包含文件，包含文件的retu
 				 2.是否是文件夹：is_dir('地址');
 				 3.文件或文件夹是否存在：file_exists('地址');
 				
+表单enctype属性：默认情况下，表单传递的是字符流，不能传递二进制流。如果传递音乐、图片、视频这种二进制数据，则必须设置enctype="multipart/form-data"
+				1.application/x-www-form-urlencoded (默认) ，字符流，带格式的文本数据，将数据整体打包成xml传递。
+				2.multipart/form-data 复合的表单数据，既能传递字符流又能传递二进制流。文件上传必须设置此类型。文件属于二进制流。
+				3.text/explain 无格式的文本数据，主要用户电子邮件。
+				注：表单允许上传的最大值设置
+				<form ...>
+					<input type="hidden" name="MAX_FILE_SIZE" value='10'></input> //必须在表单最上面，MAX_FILE_SIZE固定写法，value为多少字节，此为10字节
+				</form>
+				
+文件上传：$_FILES['文件名字']['error'] error为0则上传成功 error为4则上传失败
+			如：if($_FILES['文件名']['error'] == 0){
+					move_uploaded_file($_FILES['文件名']['tmp_name'],'文件新名字');
+				}else{
+					echo '上传有误错误码为:'.$_FILES['文件名']['error'];
+				}
+			
+			    			
 
 	  
 	  
