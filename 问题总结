@@ -1,0 +1,5 @@
+--出现服务器蹦了大概思路， 先看nigix 因为是入口，在看php-fpm有没有开, 最后看数据库配置问题
+	观察这几个进程有没有关闭 
+	ps -ef | grep nginx
+	ps -ef | grep php-fpm
+	ps -ef | grep mysqld
