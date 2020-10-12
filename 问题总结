@@ -3,3 +3,5 @@
 	ps -ef | grep nginx
 	ps -ef | grep php-fpm
 	ps -ef | grep mysqld
+	
+	
