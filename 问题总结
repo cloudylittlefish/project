@@ -4,4 +4,5 @@
 	ps -ef | grep php-fpm
 	ps -ef | grep mysqld
 	
+--linux防火墙有没有屏蔽443 https
 	
