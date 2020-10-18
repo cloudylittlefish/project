@@ -71,6 +71,8 @@ select department_id,job_id,avg(salary) a from employees group by department_id,
 select max(salary)-min(salary) difference from employees;
 }
 
+字符集和校对集：字符集和校对规则是一对多的关系。校对集不同，排序就不一样。  
+
 （唯一性索引）
 主键和唯一键： 异： 1.主键是只有一个且不能为空。
 				    2.唯一键可以有多个且可以为空。
