@@ -71,6 +71,40 @@ select department_id,job_id,avg(salary) a from employees group by department_id,
 select max(salary)-min(salary) difference from employees;
 }
 
+（唯一性索引）
+主键和唯一键： 异： 1.主键是只有一个且不能为空。
+				    2.唯一键可以有多个且可以为空。
+			   同： 3.主键和唯一键的值都不能重复。
+
+外键：表的一个公共字段，在主表里是一个字段（可能也是主键），在从表里却是主键（可能也不是主键，但必须是唯一性索引）。
+	  有三种外键操作：1.严格限制。如下笔记。
+					  2.置空操作。当主表删除时，从表的外键字段为null。foreign key(字段) references 主表（字段）on delete set null；
+					  3.级联操作。当主表更新时，从表的外键字段也更新。foreign key(字段) references 主表（字段）on update cascade；
+					  置空、级联合在一起写：foreign key(字段) references 主表（字段）on delete set null on update cascade；
+					  注：置空、级联操作中外键不能为从表的主键。
+外键约束：创建表时：foreign key(字段) references 主表（字段）；
+		  修改时：alter table 从表 add foreign key（字段）references 主表（字段）；
+		  删除时：alter table 从表 drop foreign key `外键名`；
+		  注：哪个表使用foreign...就是从表
+				规则（严格限制）：1.从表插入的记录必须主表有的。
+								  2.主表删除的记录必须先删从表。
+								  3.删除主表前，先删从表。
+								  4.名字可以不一样，但类型要一样。
+								  5.mysql中必须innodb才支持。
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
 
   
