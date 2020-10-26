@@ -203,7 +203,7 @@ group by:要求select后面加分组函数和group by后面出现的字段,有wh
 		4.也可以添加排序（排序放在整个分组查询的最后）
 		
 小结：	1.如果是分组查询，查询字段必须是分组字段（在group by后面的）和聚合函数；
-		2.查询字段是普通字段（不在group by后面的），只取第一个值。但是可以用group_concat（普通字段）将同一组的多个值写在一起。
+		2.查询字段是普通字段（不在group by后面的），只取（多个相同的）排第一个的值。但是可以用group_concat（普通字段）将同一组的多个值写在一起。
 	
 	
 //简单查询条件,分组前的查询条件（在同一个表里），where后面的条件字段在from后面的表里
@@ -263,6 +263,7 @@ select max(salary)-min(salary) difference from employees;
 having：在结果集上作筛选。结果集上没有的字段作筛选会报错。如select name...这个结果集只有name的字段，则having只能在name上作筛选。
 		having和where的区别：where是在原始数据上（表）作筛选，having是在记录集上作筛选。
 		
+using：用来指定连接字段。
 前多少名=》排序=》order
 
 limit在update和delete语句中也可以使用的，配合order。
@@ -326,8 +327,43 @@ union [选项]:将多个select语句结果集纵向联合起来。可以将一�
 				  
 dual表：伪表，为了保证语句的完整性。如select 10*10；这里面没有表参与，等价于 select 10*10 from dual；
 
-
+多表查询：
+		内连接：返回两个表的公共记录。
+		如：select * from 表1 [inner] join 表2 on 公共部分；//和 ...from 表1，表2 where ...效果一样
+		多个表内连接：  表1 [inner] join 表2 on 公共部分 [inner] join 表3 on 公共部分 ...
+		
+		左外连接：以左边表字段为准，右边没有对应的记录则为null
+		如：select * from 表1 left join 表2 on 公共部分；//以表1为准
+		
+		右外连接：以右边表字段为准，右边没有对应的记录则为null
+		如：select * from 表1 right join 表2 on 公共部分；//以表2为准
+		
+		交叉连接：返回笛卡尔积（如果有on连接表达式则与内连接一样）
+		如：select * from 表1 cross join 表2；
 			
+		自然连接：自动判断条件连接，判断依据时相同字段（如果有两个以上公共字段，则用using指定字段，内连接也可使用，字段也会优化排为第一位）
+		如：select * from 表1 natural join 表2 using(公共字段)；
+		1.自然内连接：自动判断连接，两边表字段有为null的记录不显示。
+		如：select * from 表1 natural join 表2；
+		2.自然左外连接：以左边表字段为准，右边没有对应的记录则为null。
+		如：select * from 表1 natural left join 表2；
+		3.自然右外连接：以右边表字段为准，左边没有对应的记录则为null。
+		如：select * from 表1 natural right join 表2；
+		自然连接小结：1.表连接是通过同名字段来连接的。
+					  2.如果没有同名字段则返回笛卡尔积。
+					  3.同名的连接字段只显示一个，并且将该字段放在最前面。
+
+count是算总数，sum是算求和。count(字段名) sum(字段名='xxx')；//字段名那不用单引号
+
+子查询：外面的查询为父查询，子查询为夫查询提供条件。
+		如：select * from 表1 where （子查询）
+		
+		标量子查询：特点是子查询返回的值是一个              （。。。）
+		列子查询：特点是子查询返回的值是一列，用in或not in （绝大多数子查询使用的是这两种）
+		行子查询：
+		表子查询：from后面跟的是数据源，如果当子查询作表必须取别名
+		[not]exists子查询：如select * from 表 where [not] exists... (使用exists能提高查询效率)
+				  
 			
 			
 
