@@ -413,7 +413,78 @@ count是算总数，sum是算求和。count(字段名) sum(字段名='xxx')；//
 		小结：1.一条sql语句就是一个独立的事物（自动提交事务）。
 		      2.开始事务时是将多个sql语句放到一个事务中执行。
 		
-  
+函数：
+		1.随机数：rand();
+			如：随机排序：select * from 表 order by rand();
+				随机一条记录：select * from 表 order by rand() limit 1；
+		2.四舍五入：round()； --round(3.1465,3)-- 取三位=3.147
+		3.截取：truncate();  --truncate(3.1447,3) -- 取三位=3.144
+		4.ceil：向上取整 -- ceil(3.1) -- 4
+		5.floor：向下取整 -- floor(3.9) -- 3
+		6.ucase：转成大写
+		7.lcase：装成小写
+		8.left：从左边截取 -- left('abcdef',3) --abc
+		9.right：从右截取  --right('abcdef',3) -- def
+		10.substring：字符串截取 -- substring('abcdef',2,3) -- 从第二个开始，截取三个 -- bcd
+		11.concat：字符串连接 
+			如：concat('中国','北京') -- 中国北京
+				select concat(字段名1,'-',字段名2) info from 表; -- info =》字段名1-字段名2
+		12.coalesce：-- coalesce(str1,str2) -- str1存在则显示str1，否则显示str2
+		13.length：字节长度 -- length('锄禾日当午') -- 10  --gbk
+		14.char_length：字符长度 -- char_length('锄禾日当午') -- 5 -- mysql中gbk 一个字符占用（等于）二个字节
+		15.unix_timestamp：时间戳 -- unix_timestamp() 
+		16.from_unixtime：格式化时间戳 -- from_unixtime(unix_timestamp()); -- 2020-10-30 21：51：30
+		17.now：获取当前格式化时间 -- now() -- 2020-10-30 21：51：50
+		18.year、month、day、hour、minute、second：年、月、日、时、分、秒 -- year(now())、month(now())...  -- 2020、10...
+		19.dayname、monthname、dayofyear：星期、月、本年第几天 -- dayname(now())...
+		20.datediff：相距天数  -- datediff(now(),'2020-11-02')  -- 2
+		
+预处理：用来解决一条sql频繁执行的问题。
+		每个代码段的执行都要经历：词法分析--语法分析--编译--执行
+		
+		预处理语句：prepare 预处理名字 from 'sql语句'
+			如：prepare 预处理名字 from 'select * from 表名';
+			带参数的：prepare 预处理名字 from 'select * from 表名 where name=?';
+			多个参数：prepare 预处理名字 from 'select * from 表名 where name=? and sex=？';  -- ？是占位符
+			
+		执行预处理：execute 预处理名字 [using 变量]
+			如：execute 表名；
+			带参数的：delimiter //
+					  set @name='aa';  -- mysql中变量以@开头
+					  execute 预处理名字 using @name//  
+			多个参数：delimiter //
+					  set @name='aa';  -- mysql中变量以@开头
+					  set @sex='男';
+					  execute 预处理名字 using @name,@sex// 
+					  
+数据备份与还原：
+	备份：
+		利用mysqldump工具 -- 语法：mysqldump 数据库连接 [-B --带有创建数据库语法] 数据库名 [指定的表名、指定的表名...] > 数据库备份地址
+		如：mysqldump -uroot -proot data > c:\data.sql  -- 将data数据库中所有的表都导出到data.sql中
+		
+	还原：
+		1.使用source：source 需要导入的sql文件名；-- 需要登录后
+			如：source data.sql;
+		2.通过mysql指令还原 --windows
+			mysql 数据库连接 数据库名 < 需要导入的sql文件名； -- 不需要登录
+			如：mysql -uroot -proot data < test.sql;
+
+连接数据库：
+		mysqli_connect(主机ip,用户名,密码,数据库,端口号); -- 如 $link = mysqli_connect('localhost','root','root','data',3306) or die('错误信息：'.mysqli_connect_error());
+		mysqli_connect_error(): 获取数据库连接的错误信息 -- 如if(mysqli_connect_error()) {}
+		mysqli_connect_errno(): 获取数据库连接的错误编码
+		mysqli_set_charset(连接对象，字符编码)； -- mysqli_set_charset(link,'utf8');
+		mysqli_query()：执行mysql语句 -- 如 $rs = mysqli_query($link, 'select * from ...');
+		mysqli_num_rows()：总行数  -- 如：$num = mysqli_num_rows($rs);
+		mysqli_fetch_all()：匹配所有记录，默认是索引数组 -- 如：mysqli_fetch_all($rs,$MYSQLI_ASSOC); -- 关联数组
+		mysqli_fetch_row()：将一条条记录匹配成索引数组，指针下移 -- 如：$row = mysqli_fetch_row($rs);
+		mysqli_fetch_assoc()：将一条条记录匹配成关联数组，指针下移 -- $row = mysqli_fetch_assoc($rs);
+		mysqli_free_result():销毁结果集 -- 如：mysqli_free_result($rs);
+		mysqli_close():关闭连接 -- 如：mysqli_close($link);
+		
+		注：与数据库相关用utf8，与页面显示相关用utf-8。
+			
+			
   
   
   
