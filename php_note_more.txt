@@ -434,6 +434,8 @@ return: 1.终止当前脚本执行，如果有包含文件，包含文件的retu
 										2.不同点：常量的值不可以修改，静态的值可以修改。
 										
 		小结：类有三大成员：属性、方法、常量。对象是由属性和方法组成（在堆里）。
+				访问修饰符public、protected、private。
+				方法修饰符static、final、abstract
 		
 		
 		接口：interface
@@ -458,12 +460,55 @@ return: 1.终止当前脚本执行，如果有包含文件，包含文件的retu
 				$stu = new Student();
 				$fun->call($stu); //相当于把函数写到类中并调用
 			
+		自动加载类：当缺少类的时候自动调用。
+			方法一：__autoload()。  //PHP7.2以后不支持了
+				如：function __autoload($class_name) { require ...$class_name...}  
+			
+			方法二：spl_autoload_register()：注册给定的函数作为__autoload的实现。PHP5.1以后支持
+				如1：function loadClass($class_name){ ... }
+					 function loadClass2($class_name){ ... }
+					 spl_autoload_register('loadClass');
+					 spl_autoload_register('loadClass2');
+					注：注册到队列中，先进先出，先注册的先调用
+					
+				如2：spl_autoload_register(function($class_name){
+						...
+					 });
+					 
+				如3：处理少部分不规则的类命名
+					 spl_autoload_register(
+						function ($class){
+							$map = [
+								'Book'=>'aa/...',
+								'Goods'=>'bb/...',
+							];
+							if(isset($map[$class])){
+								require $map[$class];
+							}
+					 });
 			
 			
+	创建对象的方式有两种：
+		1.实例化。
+		2.克隆。 如$stu1 = clone $stu2;//对象赋值是地址赋值，克隆传递赋值
+			注：当执行clone的时候，会自动调用__clone()方法。
 			
+设计模式：
+		单例：一个类只能有一个对象。三私一公
+		class DB{
+			private static $instance;  //不能让创建的变量销毁，而且普通变量也不行，因为只能静态调用函数，所以没有对象，也就没法使用$this->
 			
+			private function __construct() {}  //阻止外部调用
 			
+			private function __clone() {}  //阻止外部克隆
 			
+			public function static getInstance(){
+				if( !self::$instance instanceof self )  //instanceof判断是否属于某个类的，不属于就实例化
+					self::$instance = new self();
+				return self::$instance;
+				
+			}
+		}
 			
 			
 			
