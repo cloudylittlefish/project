@@ -494,7 +494,7 @@ return: 1.终止当前脚本执行，如果有包含文件，包含文件的retu
 			注：当执行clone的时候，会自动调用__clone()方法。
 			
 设计模式：
-		单例：一个类只能有一个对象。三私一公
+		单例模式：一个类只能有一个对象。三私一公
 		class DB{
 			private static $instance;  //不能让创建的变量销毁，而且普通变量也不行，因为只能静态调用函数，所以没有对象，也就没法使用$this->
 			
@@ -509,8 +509,50 @@ return: 1.终止当前脚本执行，如果有包含文件，包含文件的retu
 				
 			}
 		}
-			
-			
+		
+		
+		工厂模式：传递不同的参数获取不同的对象。只要满足这个条件的都是工厂模式。
+		class productsFactory{
+			public function create($num)
+				switch($num){
+					case 1:
+						return new ProductA();
+					case 2:
+						return new ProductB();
+					default:
+						return null;
+				}
+		}
+		$factory = new productsFactory();
+		$obj1 = factory->create(1);
+		...
+		
+		
+		策略模式：传递不同的参数调用不同的策略（方法）。
+		class Walk{
+			public function way(){
+				echo '走路去';
+			}
+		}
+		class Bus{
+			public function way(){
+				echo '坐车去';
+			}
+		}
+		
+		class Student{
+			public function play($obj){
+				$obj->way();
+			}
+		}
+		$student = new Student();
+		$student->play(new Walk); //走路去
+		$student->play(new Bus);  //坐车去
+		
+		
+序列化与反序列化：serialize、unserialize
+	在PHP中，数组和对象无法保存，需要转换成一个序列。//file_put_contents()可以作测试
+	注：类的反序列化必须要有类的参与，否则将变成未知类。
 			
 			
 			
