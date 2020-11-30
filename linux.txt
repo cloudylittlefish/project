@@ -1,3 +1,4 @@
+{--vim
 dd  删除整行
 ndd 向下删除n行
 d0  数字0，删除游标至行首
@@ -25,7 +26,7 @@ u         复原前一个动作
 :1,10s/word1/word2    从第1行到第10行将word2替换word1，每一行只替换一次
 :1,$s/word1/word2    从第1行到最后一行将word2替换word1，每一行只替换一次
 :1,10s/word1/word2/g  从第1行到第10行将word2替换word1，全部替换
-:%s/abc/ghj    当前行将ghj替换abc，只替换一次
+:%s/abc/ghj    当前行将ghj替换abc，只替换一次,%模糊匹配
 :%s/abc/ghj/g  全局将ghj替换abc
 
 :10,20s#^#//#g  在10-20行添加//注释
@@ -45,7 +46,41 @@ ctrl+d: 下翻半屏。
 ctrl+u: 上翻半屏。
 
 
-
 :set nu    设置行号
 :set nonu  取消行号
+
+vim编辑器一些设置，先:version查看位置，system vimrc 通用设置(建议更改此项, Vim升级时不会覆盖) user vimrc 个人设置
+  " 显示行号
+  set number
+  "
+  " " 语法高亮 
+  set syntax=on
+  "
+  " " Tab键的宽度为4
+  set tabstop=4
+  "
+  " " 统一缩进为4
+  set softtabstop=4
+  "
+  " " 自动缩进
+  set autoindent
+  "
+  " " 代码补全
+  set completeopt=preview,menu
+  "
+  "
+  " " 去掉输入错误的提示声音
+  set noeb
+  "
+  " " 不需要备份
+  set nobackup
+  "
+  " " 禁止生成临时文件
+   set noswapfile
+  " 补全
+  inoremap ( ()<ESC>i
+  inoremap [ []<ESC>i
+  inoremap { {}<ESC>i
+  inoremap < <><ESC>i
+}
 
