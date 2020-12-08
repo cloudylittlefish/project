@@ -592,12 +592,23 @@ return: 1.终止当前脚本执行，如果有包含文件，包含文件的retu
 			}
 			注：遍历时根据当时位置，位置不同，遍历的属性可能就不同
 		
+命名空间：别名 ，区别不同文件和方便访问
+		namespace China\Beijing\Shunyi;
+		function getInfo() { echo 'beijing' }
 		
+		namespace USA;
+		function getInfo() { echo 'USA' }
 		
-		
-		
-		
-		
+		调用：getInfo(); //=> USA下的
+			  Shunyi\getInfo(); //=>在当前命名空间下拼接\USA\Shunyi\getInfo() =>当前找不到
+			  
+			  use China\Beijing\Shunyi;
+			  Shunyi\getInfo(); //=> 首先在当前命名空间下拼接\USA\Shunyi\getInfo() =>当前找不到 => 然后再去引入的下找=>\China\Beijing\Shunyi\getInfo();//beijing
+		注：\代表公共部分。在引入下的访问相同的名称只一次。在没有引入下的不完全限定名称访问时会全部拼接 如\China\Beijing\Shunyi\Shunyi\getInfo()
+		1.命名空间只能存放类、函数、const常量。
+		2.第一个namespace前面不能有任何的代码、空白字符（这是指<?php前面的 如   <?php，因为<?php里面的空白字符apache和nginx会忽略掉，编译之前会把所有
+			的注释、空格都去掉），hearder()也不行。
+		3.包含文件不影响当前的命名空间。
 		
 		
 		
