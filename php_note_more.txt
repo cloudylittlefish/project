@@ -608,16 +608,138 @@ return: 1.终止当前脚本执行，如果有包含文件，包含文件的retu
 		1.命名空间只能存放类、函数、const常量。
 		2.第一个namespace前面不能有任何的代码、空白字符（这是指<?php前面的 如   <?php，因为<?php里面的空白字符apache和nginx会忽略掉，编译之前会把所有
 			的注释、空格都去掉），hearder()也不行。
-		3.包含文件不影响当前的命名空间。
+		3.包含文件不影响当前的命名空间。 就是包含文件的值不会影响当前文件的值。
 		
+trait（原型）：用来代码复用的。为了减少单继承语言的限制，可以在不同层次结构内独立的类中复用类的方法集。
+		如：
+		trait A { function getInfo(){ echo 'test a'; } };
+		class Student { 
+			use A; //引用原型,引用多个用逗号隔开
+		}
+		$stu = new Student;
+		$stu->getInfo(); //test a
 		
+		注：trait和继承的函数同名的情况下，trait会覆盖继承里的方法，只会显示trait的；引用多个trait同名的方法则会报错。
 		
+		解决triat同名冲突：
+		use A,B{
+			//方法一：替换
+			A::getInfo insteadof of B; //A中的getInfo替换B的，即用A的方法。
+			//方法二：改名 
+			A::getInfo insteadof of B; //这个替换必须要写，不然getInfo就不知用哪个了
+			B::getInfo as show; //把B的getInfo方法改名为show
+		}
 		
+		更改权限：trait的某些方法是private的
+		use A{
+			getInfo as public ; //改为public权限
+			getInfo as public getInfo2; //改为public权限的同时也改名
+		}
 		
+		多学一招：具体看手册
+		1.多个trait可以组成一个trait。
+		2.trait可以定义抽象成员。
+		3.trait可以定义静态成员。
+		4.trait可以定义属性。
 		
+迭代器：
+		遍历数组：手动遍历数组
+		步骤：1.复位数组指针；
+			  2.检查指针是否合法；
+			  3.获取当前值；
+			  4.获取当前键；
+			  5.指针下移；
+		代码实现：
+			$stu = ['tom','berry','rose'];
+			reset($stu); //复位指针
+			while(key($stu) !== null){ //判断键合法 0==null==false
+				echo key($stu).'-'.current($stu).PHP_EOL; //获取键和值 current是获取当前值
+				next($stu); //指针下移
+			}
+			
+		迭代器：遍历对象，php有内置的Iterator,只要实现内置的五个抽象函数(rewind,valid,key,current,next)，遍历对象的功能就实现了
+		class MyClass implements Iterator{
+			private $list = [];
+			public function addStu($name){
+				$this->list[] = $name;
+			}
+			//复位
+			public function rewind(){
+				reset($this->list);
+			}
+			//判断键合法
+			public function valid(){
+				return key($this->list) !== null;
+			}
+			//获取当前值
+			public function current(){
+				return current($this->list);
+			}
+			//获取当前键
+			public function key(){
+				return key($this->list);
+			}
+			//指针下移
+			public function next(){
+				return next($this->list);
+			}
+		}
+		$class = new MyClass();
+		$class->addStu('tom');
+		$class->addStu('berry');
+		foreach($class as $k=>$v){ //遍历对象，上面的方法不用调用，自动会实现
+			echo $k.'-'.$v.PHP_EOL;
+		}
+		场景：遍历对象，获取的是对象中属性保存的数组。
+	  
+PSR规范
+		如果一个php文件全部都是php代码，只需要写<?php/<?= 开头就行了，不用写结尾?>
+		类命名：大写字母开头驼峰
+		方法函数：小写字母开头驼峰
+		常量：全部大写字母，字母间用下划线隔开
+		abstract public static function xxx(){} 这种顺序写修饰
+	  
+分页：
+		结论：
+			$pageno:页码
+			$startno:起始位置
+			$pagesize:页面大小
+			计算当前页起始位置：$startno = ($pageno-1) * $pagesize;
+	  
+			$rowcount:总记录数 --select count(*) ...
+			$pagecount:总页数
+			计算总页数：$pagecount = ceil($rowcount/$pagesize);//ceil向上取整
+			
+			步骤：1.获取并求出总记录数；
+				  2.循环显示页码；
+				  3.通过当前页，求出起始位置；
+				  4.获取当前页面数据，并循环显示。
+				  
+				
+			获取数据优化：原本的sql语句虽然比较经典，但每次都会获取不必要的数据，浪费资源。
+						原本：$sql = "select * from table limit $startno,$pagesize";
+						优化：$sql = "select * from table where proid>=(select proid from table limit $startno,1) limit $pagesize"; -- 不要前面的数据
 		
-		
-		
-		
+PDO(PHP Data Object):PHP数据对象 ，需要开启对应的pdo扩展
+			PDO扩展为为PHP访问各种数据库提供了一个轻量级、一致性的接口。无论访问什么数据库，都可以通过一致性的接口去操作。
+	  如：$dsn = 'mysql:host=localhost;port=3306;dbname=data;charset=utf8'; --host、port、dbname、charset可以省略，即可以写成'mysql:'，mysql:是一个整体
+		  $pdo = new PDO($dsn, 'root', 'root');//dsn是数据库数据源对象，后两个是账号和密码
+	  
+	  
+Cookie：是保存在客户端的信息包（一个文件），不可以跨浏览器共享（同一个浏览器打开第二次也不行）。通常的cookie都是临时性的，即关闭浏览器就消失。如果添加的过期时间就成了持久化cookie。以时间戳为单位。
+		客户端与服务器原理：1.客户端向服务器发送请求；
+					        2.服务器将值放到响应头中发送到客户端；
+						    3.浏览器自动的将信息保存，并在下一次访问服务器时自动将信息放到请求头中发送给服务器；
+						    4.服务器从请求头中获取带来的信息。
+	  注：请求头一般是浏览器操作的，我们无法操作，我们主要是操作响应头，php可以通过header()、setcookie()来操作。
+		  setcookie：将值放到响应头中发送到客户端，并保存在客户端；而header只是发送到客户端，并没有保存下来。
+		  $_COOKIE['name']：从请求头中获取名字是name的cookie。
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 	  
 	  
