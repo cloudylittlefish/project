@@ -732,14 +732,147 @@ Cookie：是保存在客户端的信息包（一个文件），不可以跨浏�
 						    3.浏览器自动的将信息保存，并在下一次访问服务器时自动将信息放到请求头中发送给服务器；
 						    4.服务器从请求头中获取带来的信息。
 	  注：请求头一般是浏览器操作的，我们无法操作，我们主要是操作响应头，php可以通过header()、setcookie()来操作。
-		  setcookie：将值放到响应头中发送到客户端，并保存在客户端；而header只是发送到客户端，并没有保存下来。
+		  setcookie('name','tom'); 等同于 header('Set-Cookie:name=tom');
+		  setcookie：将值放到响应头中发送到客户端，并保存在客户端；而header只是发送到客户端，并没有保存下来(Set-Cookie除外)。
 		  $_COOKIE['name']：从请求头中获取名字是name的cookie。
+		  cookie只能保存数字和字符串。
+		  
+		cookie的缺点：1.因为在浏览器中可以看到cookie的值，安全性低；
+					  2.因为只能保存数字和字符串，可控性差；
+					  3.因为数据放在请求头中传输，增加了请求时的数据负载；
+					  4.因为数据存储在浏览器中，但浏览器存储空间是有限制的，一般是4k。
+	  
+Session（会话）：是服务端技术、是基于cookie技术的。
+		原理：1.第一次访问，服务器给客户分配一个空间，每个空间都有唯一的编号（如A11）；
+			  2.将编号（如A11）放到响应头带回客户端，保存在cookie中，自己只能访问自己的session；
+			  
+		注：默认情况下session是关闭的，通过session_start()开启；通过session_id()获取会话ID；重复开启会话会报错；可以保存除了资源以外的所以类型数据。
+		session_start作用：1.没有会话空间就创建一个空间；
+						   2.有会话空间就打开空间。
+						   
+		垃圾回收：1.会话文件超过了生命周期的是垃圾文件；
+			      2.PHP自动进行垃圾回收；
+				  3.垃圾回收的概率默认是千分之一。
+				  session.gc_probability = 1
+				  session.gc_divisor = 1000
+				  
+	  区别：		cookie		session
+	保存位置    	客户端 		服务器端
+	数据大小		小（4k）	大（取决于服务器本身）
+	数据类型		字符串		除了资源以外的所有类型
+	安全性			不安全		安全
+	  
+	禁用Cookies的情况下传递Session ID，需要开启两个扩展：session.use_only_cookies = 0; //session不仅仅依赖于cookie
+														 session.use_trans_sid = 1; // 允许通过其他方式传递session_id (get/post传递)
+	<?php 
+		session_start();
+		echo '<a href="test.php?'.session_name().'='.session_id().'">链接演示</a>';
+	?>
+	在用户阻断cookie技术，可以通过URL传递Session ID（在不禁用cookie的情况下，cookie效果更好）。
+	如:<a href="index.php?<?php echo SID ?>" >(手动传递sessionID形式)
+	(如果客户端没有适当的cookie，则SID的格式为session_name=session_id,有的话SID为空字符串，
+		默认开启有cookie的设置为 setcookie(session_name(),session_id(),0,'/'))
+	
+	更改会话存储（入库）
+	1.通过session_set_save_handler()更改存储；
+	2.session_set_save_handler()必须在session_start()之前；
+	3.有6个回调函数：open，close，read，write，destroy，gc；
+	4.read必须返回字符串，其他返回bool值。
 	  
 	  
+SQL注入：通过字符串和sql语句拼接成其它含义的语句，以达到攻击的目的。
+	如：... user_name = ''or 1=1 or''...
+		... user_name = ''or 1=1 --''...
+		... user_name = ''or 1 #''...
+		
+		
+	  防范措施：1.MD5加密；//MD5加密过后的数据不可能有单引号
+				2.给特殊字符添加转义，addslashes("aa'bb'"); // aa\'bb\'
+				3.将单引号替换为空； str_replace("'",'',"aa'bb'");// aabb
+				4.预处理。 sql语句？ user_name =？
+				5.如果确定后面的参数是整数，则进行强制类型转换。// 因为会利用union 如 id = 10 union selece * from 。。。
 	  
+图片处理：需要开启GD库
+	例子：创建最简单的图片
+		//创建图片
+		$img = imagecreate(200,100);
+		//给图片分配颜色，默认分配的第一个颜色是背景色，要想更换填充颜色需要imagefill函数，如imagefill($img,0,0,$color1);
+		$color = imagecolorallocate($img,255,0,0);
+		$color1 = imagecolorallocate($img,0,255,0);
+		//更换填充颜色
+		imagefill($img,0,0,$color1);
+		//响应头，告知浏览器用jpeg格式显示
+		header('Content-type:image/jpeg');
+		//显示图片
+		imagejpeg($img);
+		//保存图片，第二个参数是地址（只是保存的话不需要设置header头）
+		imagejpeg($img,'./test1.jpeg');
 	  
-	  
-	  
+	随机验证码：
+		第一步：创建随机字符串
+			    $all_array = array_merge(range('a','z'),range('A','Z'),range(0,9));
+				//去除容易混淆的数组
+				$div_array = ['1','l','0','o','O','I'];
+				//差集
+				$array = array_diff($all_array,$div_array);
+				//随机获取数组的4个下标，有先后顺序
+				$index = array_rand($array,4);
+				//打乱顺序
+				shuffle($index);
+				//拼接成字符串
+				$code = '';
+				foreach ($index as $i){
+					$code .= $array[$i];
+				}
+				或：
+				$max = strlen($string)-1;
+				for($i=1 ;$i<=4; $i++){
+						$index = rand(0,max-1);
+						$code .= $string[$index];
+						//中文则需要开mb扩展
+						//$max = mb_strlen($string)-1;
+						//$code .= mb_substr($string,$index,1);
+					}
+		
+		第二步：创建画布或者打开图片
+			//创建画布
+			$img = imagecreate(150,30);
+			imagecolorallocate($img,255,0,0); //第一个默认背景色
+			//打开图片
+			//imagecreatefromjpeg('地址');
+		第三步：将字符串写入画布中
+			$color = imagecolorallocate($img,255,255,255); //字符串颜色
+			//往画布写字符串 字符串居中 x=（画布宽度-字符宽度*字符数）/2 ；y=（画布高度-字符高度）/2；
+			$font = 5;//字体
+			$x = ( imagesx($img)-imagefontwidth($font)*strlen($code) ) / 2;
+			$y = ( imagesy($img)-imagefontheight($font) ) / 2;
+			imagestring($img, $font, $x, $y, $code, $color);
+			header('Content-type:image/jpeg');
+			imagejpeg($img);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	  
 	  
 	  
