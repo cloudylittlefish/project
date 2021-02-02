@@ -1,0 +1,90 @@
+PHP_EOL PHP换行符
+$_SERVER['REMOTE_ADDR']：浏览当前页面的用户计算机的ip地址
+$_SERVER['HTTP_CLIENT_IP']：客户端的ip
+$_SERVER['SERVER_ADDR']：服务器IP地址
+$_SERVER['HTTP_HOST']：获得域名 如wx19hz.mrxdtech.com
+gethostbyname(域名); 如 gethostbyname('wx19hz.mrxdtech.com');  域名IP地址
+
+注：如想改变原数组的值，可在自定义函数中加引用&
+注：没有指明键名的索引数组都是从0开始的，不管是从开头还是中间。
+
+array_filter(array,[callback1,...]) --数组过滤函数，返回过滤的数组。只有一个参数时，0值，空字符串，null都会过滤，如果回调函数返回 true，
+									则把输入数组中的当前键值返回给结果数组。数组键名保持不变。
+								
+array_map(callback,array1,[array2...]) --返回包含 array1 的值的数组，每个值应用自定义函数。函数将用户自定义函数作用到数组中的每个值上，
+										并返回用户自定义函数作用后的带有新值的数组。数组键名从0开始
+										
+array_walk(array,callback,['描述语句，作用在callback中']) --函数对数组中的每个元素应用用户自定义函数。在函数中，数组的键名和键值是参数（必须的）。
+															如：function callback($value--键值,$key--键名,[$p--描述语句]){ echo "$key $p $value<br>"; }
+	
+array_intersect(array1,array2,[array3...]) --返回一个数组（交集），该数组包含了所有在 array1 中也同时出现在所有其它参数数组中的值。注意键名保留不变。	
+							
+explode('标识',srting,[limit]) --根据标识把字符串打散为数组，返回数组。
+
+implode(['标识'],array) --根据标识把数组元素组合成字符串，返回字符串。第一个参数为空时，默认是 ""（空字符串）。
+							
+array_push(array,value1,[value2...]) --向数组的尾部添加一个或多个元素（可以是数组则新舔加的数组变成二维的了，入栈），然后返回新数组的长度。
+									注：如果用 array_push() 来给数组增加一个单元，还不如用 $array[] =，因为这样没有调用函数的额外负担。
+
+array_unshift(array,value1,[value2...]) --向数组插入新元素,值将被插入到数组的开头,然后返回新数组的长度。数值键名将从0开始，以1递增。字符串键名将保持不变。
+
+array_replace(array1,[array2...]) --使用后面数组的值替换第一个数组的值,返回被替换的数组（包含第一个数组没有的值）,如果发生错误则返回NULL
+								如：$a1=array("a"=>"red","b"=>"green");
+									$a2=array("a"=>"orange","burgundy");
+									print_r(array_replace($a1,$a2)); //Array ( [a] => orange [b] => green [0] => burgundy )
+									
+array_values(array) --返回数组中所有的值,被返回的数组将使用数值键，从0开始且以1递增。
+
+array_column(array,column_key,['用作新数组的键名的列']) --返回数组，返回输入数组中某个单一列的值。
+														$a = array(
+														  array('id' => 5698,'first_name' => 'Bill','last_name' => 'Gates'),
+														  array('id' => 4767,'first_name' => 'Steve','last_name' => 'Jobs'),
+														  array('id' => 3809,'first_name' => 'Mark','last_name' => 'Zuckerberg')
+														);
+														$last_names = array_column($a, 'last_name', 'id');
+														print_r($last_names); //Array([5698] => Gates [4767] => Jobs [3809] => Zuckerberg)
+														
+array_unique(array,[sortingtype]) --移除数组中的重复的值，并返回结果数组。返回的数组中键名不变，将保持第一个的键名类型。														
+
+in_array(search,array,[type]) --如果在数组中找到值则返回 TRUE，否则返回 FALSE。如in_array("Tom", $people);
+
+strtotime(time,[now]) --将英文文本日期时间解析为 Unix 时间戳,成功则返回时间戳，失败则返回 FALSE。
+						如：strtotime("now"); strtotime("+5 hours"); strtotime("+1 week"); strtotime("next Monday") 
+
+date(format,[timestamp]) --把时间戳格式化为可读性更好的日期和时间,第二个参数为空则默认是当前的日期和时间。
+						如：date('Y-m-d H:i:s',time()); //当前时间的年-月-日 时:分:秒 2020-12-01 15:27:30
+
+$people = array("Peter", "Joe", "Glenn", "Cleveland");
+end(array) --将内部指针指向数组中的最后一个元素，并输出。如：echo end($people); //Cleveland
+current(array) --返回数组中的当前元素的值。如：echo current($people); //Peter
+next(array) --将内部指针指向数组中的下一个元素，并输出。
+prev(array) --将内部指针指向数组中的上一个元素，并输出。
+reset(array) --将内部指针指向数组中的第一个元素，并输出。
+each(array) --返回当前元素的键名和键值，并将内部指针向前移动。
+
+floor(x) --向下舍入为最接近的整数。floor(0.60); //0
+ceil(x) --向上舍入为最接近的整数。 ceil(0.40); //1
+round(x,[precision,mode]); --对浮点数进行四舍五入。round(3.4);//3  round(3.5);//4
+
+
+is_numeric(x) --用于检测变量是否为数字或数字字符串。返回布尔值。
+
+substr(string,start--从何处开始,[length--长度，默认是直到字符串的结尾，负数从末端开始数]) --返回字符串的提取部分，如果失败则返回 FALSE，或者返回一个空字符串。
+			如：substr("Hello world",1); //ello world
+				substr("Hello world",-1); //d
+				
+strpos(string,find,[start--从何处开始]) --返回字符串在另一字符串中第一次出现的位置。如果没有找到字符串则返回 FALSE。字符串位置从0开始，不是从1开始。
+stripos() --不区分大小写
+			如：strpos("You love php, I love php too!","php"); //9
+
+strrpos(string,find,[start--从何处开始]) --返回字符串在另一字符串中最后一次出现的位置。如果没有找到字符串则返回 FALSE。字符串位置从0开始，不是从1开始。
+strripos() --不区分大小写
+
+file_get_contents(string) -- 获取链接或路径内容
+file_put_contents(string ,$string(--内容)); 在指定路径填充内容
+
+
+
+
+
+
